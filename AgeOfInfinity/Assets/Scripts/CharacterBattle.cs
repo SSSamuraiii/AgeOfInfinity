@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CharacterBattle : MonoBehaviour
 {
-    private Character_Base characterBase;
+    private PlayerAnim characterBase;
 
     private void Awake()
     {
-        characterBase = GetComponent<Character_Base>();
+        characterBase = GetComponent<PlayerAnim>();
     }
 
     public void Setup(bool isPlayerTeam)
