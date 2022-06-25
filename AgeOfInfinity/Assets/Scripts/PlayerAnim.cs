@@ -5,7 +5,7 @@ using UnityEngine.Animations;
 
 public class PlayerAnim : MonoBehaviour
 {
-    const string KNIGHT_IDLE = "KNIGHT_IDLE";
+    public const string KNIGHT_IDLE = "KNIGHT_IDLE";
 
     private Animator animator;
     private string currentState;
@@ -15,7 +15,7 @@ public class PlayerAnim : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void ChangeAnimationState(string newState)
+    public void ChangeAnimationState(string newState)
     {
         //Stop the same animation from interrupting itself
         if (currentState == newState) return;

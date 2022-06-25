@@ -15,6 +15,16 @@ public class BattleHandler : MonoBehaviour
 
     [SerializeField] private Transform pfCharacterBattle;
 
+    private CharacterBattle playerCharacterBattle;
+    private CharacterBattle enemyCharacterBattle;
+    private State state;
+
+    private enum State
+    {
+        WaitingForPlayer,
+        Busy,
+    }
+
     private void Awake()
     {
         instance = this;
@@ -22,11 +32,26 @@ public class BattleHandler : MonoBehaviour
 
     void Start()
     {
-        SpawnCharacter(true);
-        SpawnCharacter(false);
+        playerCharacterBattle = SpawnCharacter(true);
+        enemyCharacterBattle = SpawnCharacter(false);
+
+        state = State.WaitingForPlayer;
     }
 
-    private void SpawnCharacter(bool isPlayerTeam)
+    private void Update()
+    {
+        if (state == State.WaitingForPlayer)
+        {
+            //when attacks (unfinished)
+            state = State.Busy;
+            playerCharacterBattle.Attack(enemyCharacterBattle, () =>
+            {
+                state = State.WaitingForPlayer;
+            });
+        }
+    }
+
+    private CharacterBattle SpawnCharacter(bool isPlayerTeam)
     {
         Vector3 position;
         if(isPlayerTeam)
@@ -37,7 +62,11 @@ public class BattleHandler : MonoBehaviour
         {
             position = new Vector3(+50, 0);
         }
-        Instantiate(pfCharacterBattle, position, Quaternion.identity);
+        Transform characterTransform = Instantiate(pfCharacterBattle, position, Quaternion.identity);
+        CharacterBattle characterBattle = characterTransform.GetComponent<CharacterBattle>();
+        characterBattle.Setup(isPlayerTeam);
+
+        return characterBattle;
     }
 
 }
