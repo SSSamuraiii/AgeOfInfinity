@@ -5,25 +5,23 @@ using UnityEngine.Animations;
 
 public class PlayerAnim : MonoBehaviour
 {
-    public const string KNIGHT_IDLE = "KNIGHT_IDLE";
-
-    private Animator animator;
+    public Animator animator;
     private string currentState;
+
 
     void Start()
     {
         animator = GetComponent<Animator>();
     }
 
-    public void ChangeAnimationState(string newState)
+    public void IdleAnimation()
     {
-        //Stop the same animation from interrupting itself
-        if (currentState == newState) return;
+        animator.Play("Idle");
+        animator.ResetTrigger("Attack");
+    }
 
-        //play the animation
-        animator.Play(newState);
-
-        //reassign the current state
-        currentState = newState;
+    public void AttackAnimation()
+    {
+        animator.SetTrigger("Attack");
     }
 }

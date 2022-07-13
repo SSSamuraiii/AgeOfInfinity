@@ -17,6 +17,7 @@ public class BattleHandler : MonoBehaviour
 
     private CharacterBattle playerCharacterBattle;
     private CharacterBattle enemyCharacterBattle;
+    private CharacterBattle activeCharacterBattle;
     private State state;
 
     private enum State
@@ -35,6 +36,7 @@ public class BattleHandler : MonoBehaviour
         playerCharacterBattle = SpawnCharacter(true);
         enemyCharacterBattle = SpawnCharacter(false);
 
+        SetActiveCharacterBattle(playerCharacterBattle);
         state = State.WaitingForPlayer;
     }
 
@@ -42,12 +44,16 @@ public class BattleHandler : MonoBehaviour
     {
         if (state == State.WaitingForPlayer)
         {
-            //when attacks (unfinished)
-            state = State.Busy;
-            playerCharacterBattle.Attack(enemyCharacterBattle, () =>
+            if (Input.GetKey(KeyCode.Space))
             {
-                state = State.WaitingForPlayer;
-            });
+                //when attacks (unfinished)
+                state = State.Busy;
+                playerCharacterBattle.damageAmount = 30;
+                playerCharacterBattle.Attack(enemyCharacterBattle, () =>
+                {
+                    ChooseNextActiveCharacter();
+                });
+            }
         }
     }
 
@@ -69,4 +75,64 @@ public class BattleHandler : MonoBehaviour
         return characterBattle;
     }
 
+    private void SetActiveCharacterBattle(CharacterBattle characterBattle)
+    {
+        activeCharacterBattle = characterBattle;
+    }
+
+    private void ChooseNextActiveCharacter()
+    {
+        if (TestBattleOver())
+        {
+            return;
+        }
+        if (activeCharacterBattle == playerCharacterBattle)
+        {
+            SetActiveCharacterBattle(enemyCharacterBattle);
+            state = State.Busy;
+            enemyCharacterBattle.damageAmount = 60;
+
+            enemyCharacterBattle.Attack(playerCharacterBattle, () =>
+            {
+                ChooseNextActiveCharacter();
+            });
+        }
+        else
+        {
+            SetActiveCharacterBattle(playerCharacterBattle);
+            state = State.WaitingForPlayer;
+        }
+    }
+
+    private bool TestBattleOver()
+    {
+        if (playerCharacterBattle.IsDead())
+        {
+            //Player dead, enemy wins
+            //CodeMonkey.CMDebug.TextPopupMouse("Enemy Wins!");
+            int randomEndScreen = Random.Range(1, 3);
+            switch(randomEndScreen)
+            {
+                case 1:
+                    BattleOverWindow.Show_Static("IS THAT ALL?... HOW DISAPPOINTING...");
+                    break;
+                case 2:
+                    BattleOverWindow.Show_Static("DEAD ALREADY?... LET'S HOPE THE NEXT ONE DOESN'T DIE AS QUICKLY");
+                    break;
+                case 3:
+                    BattleOverWindow.Show_Static("YOU DISAPPOINT ME, I HAD HOPED YOU'D LAST A LITTLE LONGER");
+                    break;
+            }
+            return true;
+        }
+        if (enemyCharacterBattle.IsDead())
+        {
+            //Enemy dead, player wins
+            //CodeMonkey.CMDebug.TextPopupMouse("Player Wins!");
+            BattleOverWindow.Show_Static("Victory!");
+            return true;
+        }
+
+        return false;
+    }
 }

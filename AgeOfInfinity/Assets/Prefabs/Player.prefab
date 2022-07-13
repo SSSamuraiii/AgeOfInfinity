@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1304253052923782596}
+  - component: {fileID: 2276437082877040410}
   - component: {fileID: 1878941007571948635}
   - component: {fileID: 6317554948943320664}
   m_Layer: 0
@@ -32,6 +33,19 @@ Transform:
   m_Father: {fileID: 4536504083658071748}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2276437082877040410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4552359281022204854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4330caebfa7e474ab285218e80f2498, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6317554948943320664}
 --- !u!212 &1878941007571948635
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -93,7 +107,7 @@ Animator:
   m_GameObject: {fileID: 4552359281022204854}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 814eb925c76ff3b46b12a4ee79ea3267, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9e3a36c9a38d30a4d8eab6414793a9f2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -146,3 +160,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cbbaf66a8f447446afd2f1f54d8aa68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pfHealthBar: {fileID: 3751089337341286778, guid: 0a811c9089816704f97ffd91a04d4f97, type: 3}
+  fillBar: {fileID: 3751089337341286778, guid: 0a811c9089816704f97ffd91a04d4f97, type: 3}
